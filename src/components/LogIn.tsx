@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
+type Infos  = {
+  id: string;
+  pass: string;
+};
 
-export const LogIn = (props: any):any => {
+export const LogIn = (props: Infos): JSX.Element => {
   const [state, setState] = useState(props); //オブジェクトを渡すことが可能
   const { id, pass } = state;
   const logInId = "kobaru";
@@ -11,32 +15,13 @@ export const LogIn = (props: any):any => {
   const history = useHistory();
   const handleClick = () => {
     if (id === logInId && pass === logInPass) {
-      history.push('/LogIn/myPage');
+      history.push("/LogIn/myPage");
     }
   };
-
-
-  useEffect(() => {
-    console.log("This is like componentDidMount ro componentDidUpdate");
-  });
-
-  useEffect(() => {
-    console.log("This is like componentDidMount");
-  }, []);
-
-  useEffect(() => {
-    console.log("This callback is for name only");
-    handleClick()
-
-  }, [id, pass]);
 
   return (
     <>
       <h1>ログインページ</h1>
-      <Link to="/LogIn/myPage">MyPage</Link>
-      <br />
-      <button type="button" onClick={handleClick}></button>
-
       <p>IDとパスワードの入力をして下さい。</p>
       <label>
         <input
@@ -54,13 +39,12 @@ export const LogIn = (props: any):any => {
         パスワード
       </label>
       <br />
-      {/* <button onClick={move} >決定</button> */}
       <button onClick={() => setState(props)}>リセット</button>
+      <button type="button" onClick={handleClick}>ログイン</button>
     </>
   );
 };
 
-// export default LogIn;
 LogIn.defaultProps = {
   id: "",
   pass: "",
