@@ -12,13 +12,13 @@ export function App() {
     <>
       <BrowserRouter>
         <div className="App">
-          <Link to="/">Home</Link>
+          {/* <Link to="/">Home</Link>
           <br />
           <Link to="/LogIn">LogIn</Link>
           <br />
           <Link to="/Page2">PAge2</Link>
           <br />
-          <Link to="/">MyPage</Link>
+          <Link to="/">MyPage</Link> */}
         </div>
         <Router />
       </BrowserRouter>

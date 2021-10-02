@@ -1,18 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
+import { Link } from "react-router-dom";
 
 type Infos = {
   name: string;
   number: string;
 };
+const APP_KEY = "name";
 
 export const MyPage = (props: Infos): JSX.Element => {
   const [state, setState] = useState(props); //オブジェクトを渡すことが可能
   const { name, number } = state;
 
+  // useEffect(() => {
+  //   console.log("This callback is for name only");
+  //   return;
+  // }, [name, number]);
+
+  const appState = localStorage.getItem(APP_KEY);
+  const initialState = appState
+    ? JSON.parse(appState)
+    : {
+        events: [],
+        operationLogs: [],
+      };
+  // const [state, dispatch] = useReducer(reducer, initialState)
+
   useEffect(() => {
-    console.log("This callback is for name only");
-    return;
-  }, [name, number]);
+    localStorage.setItem(APP_KEY, JSON.stringify(state));
+  }, [state]);
 
   return (
     <>
@@ -37,6 +52,14 @@ export const MyPage = (props: Infos): JSX.Element => {
         />
         金額を入力
       </label>
+      <br />
+      <Link to="/LogIn/myPage/Page1">Page1</Link>
+      <br />
+      <Link to="/LogIn/myPage/detailA">Page1DetailA</Link>
+      <br />
+      <Link to="/LogIn/myPage/detailB">Page1DetailB</Link>
+      <br />
+
     </>
   );
 };
