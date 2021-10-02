@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 type Infos = {
   name: string;
@@ -25,17 +26,36 @@ export const MyPage = (props: Infos): JSX.Element => {
       };
   // const [state, dispatch] = useReducer(reducer, initialState)
 
+  const history = useHistory();
+  const handleClickPage1 = () => {
+    history.push("/LogIn/myPage/Page1");
+  };
+  const handleClickPage1DetailA = () => {
+    history.push("/LogIn/myPage/detailA");
+  };
+  const handleClickPage1DetailB = () => {
+    history.push("/LogIn/myPage/detailB");
+  };
+
   useEffect(() => {
     localStorage.setItem(APP_KEY, JSON.stringify(state));
   }, [state]);
-
   return (
     <>
       <h1>マイページ</h1>
       <p>
         {name}さん、残高{number}円です。
       </p>
-      <button onClick={() => setState(props)}>Reset</button>
+      <button type="button" onClick={handleClickPage1}>
+        Page1
+      </button>
+      <button type="button" onClick={handleClickPage1DetailA}>
+        Page1DetailA
+      </button>
+      <button type="button" onClick={handleClickPage1DetailB}>
+        Page1DetailB
+      </button>
+      <br />
       <br />
       <label>
         <input
@@ -53,13 +73,7 @@ export const MyPage = (props: Infos): JSX.Element => {
         金額を入力
       </label>
       <br />
-      <Link to="/LogIn/myPage/Page1">Page1</Link>
-      <br />
-      <Link to="/LogIn/myPage/detailA">Page1DetailA</Link>
-      <br />
-      <Link to="/LogIn/myPage/detailB">Page1DetailB</Link>
-      <br />
-
+      <button onClick={() => setState(props)}>Reset</button>
     </>
   );
 };
