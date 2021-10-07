@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-type Infos  = {
+type Infos = {
   id: string;
   pass: string;
 };
@@ -32,6 +32,7 @@ export const LogIn = (props: Infos): JSX.Element => {
       <br />
       <label>
         <input
+          type="password"
           value={pass}
           onChange={(e) => setState({ ...state, pass: e.target.value })}
         />
@@ -39,7 +40,9 @@ export const LogIn = (props: Infos): JSX.Element => {
       </label>
       <br />
       <button onClick={() => setState(props)}>リセット</button>
-      <button type="button" onClick={handleClick}>ログイン</button>
+      <button type="button" onClick={handleClick}>
+        ログイン
+      </button>
     </>
   );
 };

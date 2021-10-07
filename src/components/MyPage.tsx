@@ -4,27 +4,22 @@ import { useHistory } from "react-router-dom";
 
 type Infos = {
   name: string;
-  number: string;
+  inputAmount: number;
+  balance: number;
 };
-const APP_KEY = "name";
+type ListInfos = {
+  tradingDetail: string;
+  tradingMoney: number;
+  color: { color: string };
+};
+
+const tradingList: ListInfos[] = [];
 
 export const MyPage = (props: Infos): JSX.Element => {
   const [state, setState] = useState(props); //オブジェクトを渡すことが可能
-  const { name, number } = state;
+  const { name, inputAmount, balance } = state;
 
-  // useEffect(() => {
-  //   console.log("This callback is for name only");
-  //   return;
-  // }, [name, number]);
-
-  const appState = localStorage.getItem(APP_KEY);
-  const initialState = appState
-    ? JSON.parse(appState)
-    : {
-        events: [],
-        operationLogs: [],
-      };
-  // const [state, dispatch] = useReducer(reducer, initialState)
+  const unCreatable = inputAmount.toString() === NaN.toString();
 
   const history = useHistory();
   const handleClickPage1 = () => {
@@ -37,48 +32,99 @@ export const MyPage = (props: Infos): JSX.Element => {
     history.push("/LogIn/myPage/detailB");
   };
 
+  //入金+
+  const handleClickPayment = () => {
+    const result: boolean = window.confirm(`${inputAmount}円入金されますか？`);
+
+    if (result) {
+      setState({ balance: balance + inputAmount, name, inputAmount: NaN });
+
+      tradingList.push({
+        color: { color: "blue" },
+        tradingDetail: "入金",
+        tradingMoney: inputAmount,
+      });
+    }
+  };
+
+  //出金-
+  const handleClickWithdrawal = () => {
+    const result: boolean = window.confirm(
+      `${inputAmount}円引き出しされますか？`
+    );
+
+    if (result) {
+      setState({ balance: balance - inputAmount, name, inputAmount: NaN });
+      tradingList.push({
+        color: { color: "red" },
+        tradingDetail: "引出",
+        tradingMoney: inputAmount,
+      });
+    }
+  };
+
+  const cancel = () => {
+    setState({ balance, name, inputAmount: NaN });
+  };
+  const listItems = (
+    <ul>
+      {tradingList.map((v, i) => (
+        <li key={i} style={v.color}>
+          取引内容：{v.tradingDetail}　　{v.tradingMoney}円
+        </li>
+      ))}
+    </ul>
+  );
+
   useEffect(() => {
-    localStorage.setItem(APP_KEY, JSON.stringify(state));
-  }, [state]);
+
+    console.log(tradingList);
+
+  }, [state, name, inputAmount, balance, tradingList]);
+
   return (
     <>
       <h1>マイページ</h1>
       <p>
-        {name}さん、残高{number}円です。
+        {name}さん、残高{balance}円です。
       </p>
-      <button type="button" onClick={handleClickPage1}>
-        Page1
-      </button>
       <button type="button" onClick={handleClickPage1DetailA}>
-        Page1DetailA
+        入金
       </button>
       <button type="button" onClick={handleClickPage1DetailB}>
-        Page1DetailB
+        引き出し
       </button>
       <br />
-      <br />
       <label>
         <input
-          value={name}
-          onChange={(e) => setState({ ...state, name: e.target.value })}
-        />
-        名前
-      </label>
-      <br />
-      <label>
-        <input
-          value={number}
-          onChange={(e) => setState({ ...state, number: e.target.value })}
+          type="number"
+          value={inputAmount}
+          onChange={(e) =>
+            setState({ ...state, inputAmount: e.target.valueAsNumber })
+          }
         />
         金額を入力
       </label>
       <br />
-      <button onClick={() => setState(props)}>Reset</button>
+      <button type="button" disabled={unCreatable} onClick={handleClickPayment}>
+        入金
+      </button>
+      <button
+        type="button"
+        disabled={unCreatable}
+        onClick={handleClickWithdrawal}
+      >
+        引き出し
+      </button>
+      <button onClick={cancel}>取り消し</button>
+      <br />
+      <ul>{listItems}</ul>
     </>
   );
 };
 
 MyPage.defaultProps = {
   name: "",
-  number: "",
+  inputAmount: NaN,
+  balance: 500000,
 };

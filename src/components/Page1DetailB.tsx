@@ -8,7 +8,7 @@ export const Page1DetailB = () => {
 
   return (
     <div>
-      <h1>Page1DetailBページです。</h1>
+      <h1>引き出しページです。</h1>
       <button type="button" onClick={handleClick}>
         戻る
       </button>
