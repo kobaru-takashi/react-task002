@@ -15,6 +15,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
+import { start } from "repl";
 
 type Infos = {
   id: string;
@@ -42,6 +43,11 @@ export let nameId: string = "";
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
+
+    // emailの値をreduxに入れる。
+    // MyPage では reduxから値を取得。
+
+
     const email = data.get("email");
     const password = data.get("password");
     // console.log({
@@ -50,8 +56,9 @@ export let nameId: string = "";
     // });
     if (logInId === email && logInPass === password) {
       // history.push("/LogIn/myPage");
-      dispatch(push("/LogIn/myPage"))
+      dispatch(push("/LogIn/myPage"));
       nameId = email;
+      console.log(nameId);
     }
   };
 
