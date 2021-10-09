@@ -1,7 +1,6 @@
 import { Switch, Route } from "react-router-dom";
 import { Home } from "../components/Home";
 import { LogIn } from "../components/LogIn";
-import { Page2 } from "../components/Page2";
 import { Page1Routes } from "./Page1Routes";
 
 export const Router = () => {
@@ -36,9 +35,7 @@ export const Router = () => {
           </Switch>
         )}
       />
-      <Route path="/Page2">
-        <Page2 />
-      </Route>
+
     </Switch>
   );
 };
