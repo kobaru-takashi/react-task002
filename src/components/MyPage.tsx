@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
 // import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { LogIn, nameId } from "./LogIn";
+import LogIn, { nameId }  from "./LogIn";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
@@ -13,11 +13,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 type Trading = "入金" | "引出" | "振込";
 
-type Infos = {
+export type Infos = {
   name: string;
   inputAmount: number;
   balance: number;
 };
+
 type ListInfos = {
   tradingDetail: Trading;
   tradingMoney: number;
@@ -28,7 +29,7 @@ const tradingList: ListInfos[] = [];
 
 const name = nameId;
 
-export const MyPage = (props: Infos): JSX.Element => {
+export const MyPage = (props: Infos) => {
   const [state, setState] = useState(props); //オブジェクトを渡すことが可能
   const { name, inputAmount, balance } = state;
 
@@ -143,8 +144,14 @@ export const MyPage = (props: Infos): JSX.Element => {
       </ThemeProvider>
 
       <h1>
-        {nameId}さん、残高{balance}円です。
+        {name}さん、残高{balance}円です。
       </h1>
+      <button type="button" onClick={handleClickPage1DetailA}>
+        入金
+      </button>
+      <button type="button" onClick={handleClickPage1DetailB}>
+        引き出し
+      </button>
       <br />
       <label>
         <input

@@ -13,6 +13,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { push } from "connected-react-router";
 
 type Infos = {
   id: string;
@@ -21,12 +23,13 @@ type Infos = {
 
 export let nameId: string = "";
 
-export const LogIn = (props: Infos): JSX.Element => {
-  const [state, setState] = useState(props); //オブジェクトを渡すことが可能
-  const { id, pass } = state;
+ const LogIn = (props: Infos) => {
+   const dispatch = useDispatch();
+  // const [state, setState] = useState(props); //オブジェクトを渡すことが可能
+  // const { id, pass } = props;
   const logInId = "kobaru";
   const logInPass = "kobaru";
-  const history = useHistory();
+  // const history = useHistory();
   const theme = createTheme();
   // const handleClick = () => {
   //   if (id === logInId && pass === logInPass) {
@@ -41,12 +44,13 @@ export const LogIn = (props: Infos): JSX.Element => {
     // eslint-disable-next-line no-console
     const email = data.get("email");
     const password = data.get("password");
-    console.log({
-      email: email,
-      password: password,
-    });
+    // console.log({
+    //   email,
+    //   password,
+    // });
     if (logInId === email && logInPass === password) {
-      history.push("/LogIn/myPage");
+      // history.push("/LogIn/myPage");
+      dispatch(push("/LogIn/myPage"))
       nameId = email;
     }
   };
@@ -126,7 +130,11 @@ export const LogIn = (props: Infos): JSX.Element => {
   );
 };
 
+
+
 LogIn.defaultProps = {
   id: "",
   pass: "",
 };
+
+export default LogIn;
