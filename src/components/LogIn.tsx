@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { MyPage } from "./MyPage";
 
 type Infos = {
   id: string;
   pass: string;
 };
 
+export let nameId: string = "";
+
 export const LogIn = (props: Infos): JSX.Element => {
   const [state, setState] = useState(props); //オブジェクトを渡すことが可能
   const { id, pass } = state;
   const logInId = "kobaru";
-  const logInPass = "takashi";
+  const logInPass = "kobaru";
   const history = useHistory();
   const handleClick = () => {
     if (id === logInId && pass === logInPass) {
       history.push("/LogIn/myPage");
+      nameId = id;
     }
   };
 
