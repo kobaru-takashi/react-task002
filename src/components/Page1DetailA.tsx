@@ -1,4 +1,5 @@
 import { useHistory } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 export const Page1DetailA = () => {
   const history = useHistory();
@@ -9,9 +10,9 @@ export const Page1DetailA = () => {
   return (
     <>
       <h1>入金ページです。</h1>
-      <button type="button" onClick={handleClick}>
+      <Button variant="contained"  color="secondary" onClick={handleClick}>
         戻る
-      </button>
+      </Button>
     </>
   );
 };

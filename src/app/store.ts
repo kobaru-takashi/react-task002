@@ -1,10 +1,23 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, ThunkAction, Action, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { createHashHistory } from 'history';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
+import counterReducer from '../features/counter/counterSlice'
+import userReducer from '../slice/user-slice'
+
+export const history = createHashHistory()
+
+const reducer = combineReducers({
+  router: connectRouter(history),
+  counter: counterReducer,
+  userInfo: userReducer,
+})
 
 export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
+  reducer,
+  middleware(getDefaultMiddleware) {
+    return getDefaultMiddleware({serializableCheck: false})
+      .concat(routerMiddleware(history))
+  }
 });
 
 export type AppDispatch = typeof store.dispatch;
