@@ -31,15 +31,19 @@ type ListInfos = {
 
 const tradingList: ListInfos[] = [];
 
-const names = nameId;
+// LogOut ボタンと初期化
+// 登録画面 store に入れる。
+// dummyのkobaruを残しておく。
+// initialStateDataにdummyデータを入れておく。
+// 登録画面で登録したデータでlogInsする。
+// emailとpassword以外の物を表示する
+
 
 export const MyPage = (props: Infos) => {
   const [state, setState] = useState(props); //オブジェクトを渡すことが可能
   const { name, inputAmount, balance } = state;
-  const user = useSelector((state:RootState) => state.userInfo)
-  // const user = useAppSelector((state) => state.userInfo)
+  const {userInfo} = useSelector((state:RootState) => state.userInfo)
 
-  console.log("MyPage",user);
 
   const theme = createTheme();
   const unCreatable =
@@ -152,7 +156,7 @@ export const MyPage = (props: Infos) => {
       </ThemeProvider>
 
       <h1>
-        {user.email}さん、残高{balance}円です。
+        {userInfo.email}さん、残高{balance}円です。
       </h1>
       <button type="button" onClick={handleClickPage1DetailA}>
         入金

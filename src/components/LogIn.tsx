@@ -53,7 +53,7 @@ const initialState: Infos = {
 
     if (logInId === email && logInPass === password) {
       // history.push("/LogIn/myPage");
-      dispatch(userAction({name:"aa", email:email,password:password,nickname:"ccc"}))
+      dispatch(userAction({userInfo:{name:"aa", email:email,password:password,nickname:"ccc"}}))
       dispatch(push("/LogIn/myPage"));
       nameId = email;
     }
