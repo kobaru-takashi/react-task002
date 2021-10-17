@@ -13,52 +13,49 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { push } from "connected-react-router";
 import { start } from "repl";
+import { connect } from "react-redux"
+import {RootState, store}from "../app/store"
+import {userAction} from "../slice/user-slice"
 
-type Infos = {
+
+export type Infos = {
   id: string;
   pass: string;
 };
 
 export let nameId: string = "";
 
- const LogIn = (props: Infos) => {
-   const dispatch = useDispatch();
-  // const [state, setState] = useState(props); //オブジェクトを渡すことが可能
-  // const { id, pass } = props;
+
+const initialState: Infos = {
+  id: "",
+  pass:""
+}
+
+ const LogIn:React.FC = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state:RootState) => state.userInfo)
+  console.log("aaa",user);
+  
   const logInId = "kobaru";
   const logInPass = "kobaru";
-  // const history = useHistory();
+
   const theme = createTheme();
-  // const handleClick = () => {
-  //   if (id === logInId && pass === logInPass) {
-  //     history.push("/LogIn/myPage");
-  //     nameId = id;
-  //   }
-  // };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-
-    // emailの値をreduxに入れる。
-    // MyPage では reduxから値を取得。
-
 
     const email = data.get("email");
     const password = data.get("password");
-    // console.log({
-    //   email,
-    //   password,
-    // });
+
     if (logInId === email && logInPass === password) {
       // history.push("/LogIn/myPage");
+      dispatch(userAction({name:"aa", email:email,password:password,nickname:"ccc"}))
       dispatch(push("/LogIn/myPage"));
       nameId = email;
-      console.log(nameId);
     }
   };
 

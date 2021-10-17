@@ -10,7 +10,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { UserInfo, users } from "../dummy/user-dummy-model";
+import { useDispatch , useSelector} from "react-redux";
+import {RootState, store}from "../app/store"
+import {useAppSelector} from "../app/hooks"
+
 
 type Trading = "入金" | "引出" | "振込";
 
@@ -33,6 +36,10 @@ const names = nameId;
 export const MyPage = (props: Infos) => {
   const [state, setState] = useState(props); //オブジェクトを渡すことが可能
   const { name, inputAmount, balance } = state;
+  const user = useSelector((state:RootState) => state.userInfo)
+  // const user = useAppSelector((state) => state.userInfo)
+
+  console.log("MyPage",user);
 
   const theme = createTheme();
   const unCreatable =
@@ -145,7 +152,7 @@ export const MyPage = (props: Infos) => {
       </ThemeProvider>
 
       <h1>
-        {names}さん、残高{balance}円です。
+        {user.email}さん、残高{balance}円です。
       </h1>
       <button type="button" onClick={handleClickPage1DetailA}>
         入金
