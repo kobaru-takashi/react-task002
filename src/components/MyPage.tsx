@@ -1,7 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-// import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import LogIn, { nameId }  from "./LogIn";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
@@ -10,10 +8,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useDispatch , useSelector} from "react-redux";
-import {RootState, store}from "../app/store"
-import {useAppSelector} from "../app/hooks"
-
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, store } from "../app/store";
 
 type Trading = "入金" | "引出" | "振込";
 
@@ -31,34 +27,25 @@ type ListInfos = {
 
 const tradingList: ListInfos[] = [];
 
-// LogOut ボタンと初期化
+// LogOut ボタン作成と初期化の実行
 // 登録画面 store に入れる。
 // dummyのkobaruを残しておく。
 // initialStateDataにdummyデータを入れておく。
-// 登録画面で登録したデータでlogInsする。
-// emailとpassword以外の物を表示する
-
+// 登録画面で登録したデータでlogInする。
+// emailとpassword以外のデータを表示する。
 
 export const MyPage = (props: Infos) => {
-  const [state, setState] = useState(props); //オブジェクトを渡すことが可能
-  const { name, inputAmount, balance } = state;
-  const {userInfo} = useSelector((state:RootState) => state.userInfo)
-
-
+  const [name, nameState] = useState("");
+  const [inputAmount, inputAmountState] = useState(NaN);
+  const [balance, balanceState] = useState(500000);
+  const { userInfo } = useSelector((state: RootState) => state.userInfo);
+  const history = useHistory();
   const theme = createTheme();
+
+  console.log("MyPage-userInfo", userInfo);
+
   const unCreatable =
     inputAmount.toString() === NaN.toString() || inputAmount.toString() === "0";
-
-  const history = useHistory();
-  const handleClickPage1 = () => {
-    history.push("/LogIn/myPage/Page1");
-  };
-  const handleClickPage1DetailA = () => {
-    history.push("/LogIn/myPage/detailA");
-  };
-  const handleClickPage1DetailB = () => {
-    history.push("/LogIn/myPage/detailB");
-  };
 
   //入金+
   const handleClickPayment = () => {
@@ -66,7 +53,9 @@ export const MyPage = (props: Infos) => {
 
     if (result) {
       if (inputAmount <= 500000) {
-        setState({ balance: balance + inputAmount, name, inputAmount: NaN });
+        balanceState(balance + inputAmount);
+        nameState(name);
+        inputAmountState(NaN);
 
         tradingList.push({
           color: { color: "blue" },
@@ -89,7 +78,10 @@ export const MyPage = (props: Infos) => {
 
     if (result) {
       if (!(balance - inputAmount < 0)) {
-        setState({ balance: balance - inputAmount, name, inputAmount: NaN });
+        balanceState(balance - inputAmount);
+        nameState(name);
+        inputAmountState(NaN);
+
         tradingList.push({
           color: { color: "red" },
           tradingDetail: "引出",
@@ -100,15 +92,30 @@ export const MyPage = (props: Infos) => {
           `残高不足です。引き出し金額をご確認を下さい。`
         );
         if (result) {
-          setState({ balance, name, inputAmount: NaN });
+          balanceState(balance);
+          nameState(name);
+          inputAmountState(NaN);
         }
       }
     }
   };
 
-  const cancel = () => {
-    setState({ balance, name, inputAmount: NaN });
+  //出金-
+  const logOutAction = () => {
+    const result: boolean = window.confirm(
+      "LogOutされますが、本当によろしいでしょうか？\nあなたの個人情報はすべて消えます。それでもいいですか。"
+    );
+    if (result) {
+      history.push("/");
+    }
   };
+
+  const cancel = () => {
+    balanceState(balance);
+    nameState(name);
+    inputAmountState(NaN);
+  };
+
   const listItems = (
     <ul>
       {tradingList.map((v, i) => (
@@ -121,7 +128,7 @@ export const MyPage = (props: Infos) => {
 
   useEffect(() => {
     // console.log(tradingList);
-  }, [state, name, inputAmount, balance, tradingList]);
+  }, [name, inputAmount, balance, tradingList]);
 
   useEffect(() => {
     const balancePast = (): number => {
@@ -135,9 +142,10 @@ export const MyPage = (props: Infos) => {
       });
       return money;
     };
-    setState({ balance: balancePast(), name, inputAmount: NaN });
+    balanceState(balancePast());
+    nameState(name);
+    inputAmountState(NaN);
   }, []);
-
 
   return (
     <>
@@ -145,33 +153,25 @@ export const MyPage = (props: Infos) => {
         <CssBaseline />
         <AppBar position="relative">
           <Toolbar>
-            <AccountBalanceIcon sx={{ mr: 2, }} />
+            <AccountBalanceIcon sx={{ mr: 2 }} />
             <Typography variant="h6" color="inherit" noWrap>
               MY PAGE
             </Typography>
-            <LogoutIcon sx={{ ml: 10, }} />
-
+            <Button variant="contained" color="primary" onClick={logOutAction}>
+              <LogoutIcon />
+            </Button>
           </Toolbar>
         </AppBar>
       </ThemeProvider>
 
       <h1>
-        {userInfo.email}さん、残高{balance}円です。
+        {userInfo.nickname}さん、残高{balance}円です。
       </h1>
-      <button type="button" onClick={handleClickPage1DetailA}>
-        入金
-      </button>
-      <button type="button" onClick={handleClickPage1DetailB}>
-        引き出し
-      </button>
-      <br />
       <label>
         <input
           type="number"
           value={inputAmount}
-          onChange={(e) =>
-            setState({ ...state, inputAmount: e.target.valueAsNumber })
-          }
+          onChange={(e) => inputAmountState(e.target.valueAsNumber)}
         />
         金額を入力
       </label>

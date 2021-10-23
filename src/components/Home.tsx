@@ -11,7 +11,7 @@ export const Home = () => {
   const theme = createTheme();
   const history = useHistory();
   const handleClick = () => {
-    history.push("/LogIn");
+    history.push("/SignUp");
   };
 
   return (
@@ -45,7 +45,7 @@ export const Home = () => {
             }}
           >
             <h1>
-              ログインページへ進む場合、
+              登録画面へ進む場合は、
               <br />
               ボタンを押して下さい。
             </h1>

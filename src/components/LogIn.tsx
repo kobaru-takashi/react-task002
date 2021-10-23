@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,50 +12,52 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useDispatch , useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
-import { start } from "repl";
-import { connect } from "react-redux"
-import {RootState, store}from "../app/store"
-import {userAction} from "../slice/user-slice"
+import { RootState } from "../app/store";
+import { userInfoList } from "../User/UserInfoList";
 
+const logInId = "kobaru";
+const logInPass = "kobaru";
 
-export type Infos = {
-  id: string;
-  pass: string;
-};
-
-export let nameId: string = "";
-
-
-const initialState: Infos = {
-  id: "",
-  pass:""
-}
-
- const LogIn:React.FC = () => {
+const LogIn: React.FC = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state:RootState) => state.userInfo)
-  console.log("aaa",user);
-  
-  const logInId = "kobaru";
-  const logInPass = "kobaru";
-
   const theme = createTheme();
+  const { userInfo } = useSelector((state: RootState) => state.userInfo);
+
+  console.log("LogIn-userInfo", userInfo);
+  console.log("userInfos-LogIn", userInfoList);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     const email = data.get("email");
     const password = data.get("password");
 
+    //ダミーデータ
     if (logInId === email && logInPass === password) {
-      // history.push("/LogIn/myPage");
-      dispatch(userAction({userInfo:{name:"aa", email:email,password:password,nickname:"ccc"}}))
       dispatch(push("/LogIn/myPage"));
-      nameId = email;
     }
+
+    if (userInfo.email === email && userInfo.password === password) {
+      dispatch(push("/LogIn/myPage"));
+    } else {
+      window.alert(
+        "Email または Password が間違っています。もう一度入力をして下さい。"
+      );
+    }
+
+    // const result = userInfoList.some((v) => {
+    //   return v.userInfo.email === email && v.userInfo.password === password;
+    // });
+
+    // if (result) {
+    //   dispatch(push("/LogIn/myPage"));
+    // } else {
+    //   window.alert(
+    //     "Email または Password が間違っています。もう一度入力をして下さい。"
+    //   );
+    // }
   };
 
   return (
@@ -132,13 +133,6 @@ const initialState: Infos = {
       </Container>
     </ThemeProvider>
   );
-};
-
-
-
-LogIn.defaultProps = {
-  id: "",
-  pass: "",
 };
 
 export default LogIn;
