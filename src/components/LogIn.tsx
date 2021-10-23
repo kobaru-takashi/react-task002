@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,51 +15,49 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 import { RootState } from "../app/store";
-import { userAction } from "../slice/user-slice";
+import { userInfoList } from "../User/UserInfoList";
 
+const logInId = "kobaru";
+const logInPass = "kobaru";
 
 const LogIn: React.FC = () => {
   const dispatch = useDispatch();
-  // const user = useSelector((state: RootState) => state.userInfo);
-  const { userInfo } = useSelector((state: RootState) => state.userInfo);
-  // console.log("aaa", user);
-  console.log("user", userInfo);
-
-
-  const logInId = "kobaru";
-  const logInPass = "kobaru";
-
   const theme = createTheme();
+  const { userInfo } = useSelector((state: RootState) => state.userInfo);
+
+  console.log("LogIn-userInfo", userInfo);
+  console.log("userInfos-LogIn", userInfoList);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     const email = data.get("email");
     const password = data.get("password");
 
+    //ダミーデータ
+    if (logInId === email && logInPass === password) {
+      dispatch(push("/LogIn/myPage"));
+    }
+
     if (userInfo.email === email && userInfo.password === password) {
       dispatch(push("/LogIn/myPage"));
-    }else{
+    } else {
       window.alert(
-        'Email または Password が間違っています。もう一度入力をして下さい。'
+        "Email または Password が間違っています。もう一度入力をして下さい。"
       );
     }
 
-    if (logInId === email && logInPass === password) {
-      // history.push("/LogIn/myPage");
-      dispatch(
-        userAction({
-          userInfo: {
-            name: "aa",
-            email: email,
-            password: password,
-            nickname: "ccc",
-          },
-        })
-      );
-      dispatch(push("/LogIn/myPage"));
-    }
+    // const result = userInfoList.some((v) => {
+    //   return v.userInfo.email === email && v.userInfo.password === password;
+    // });
+
+    // if (result) {
+    //   dispatch(push("/LogIn/myPage"));
+    // } else {
+    //   window.alert(
+    //     "Email または Password が間違っています。もう一度入力をして下さい。"
+    //   );
+    // }
   };
 
   return (

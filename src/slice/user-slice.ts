@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-type User = {
+export type User = {
     userInfo: {
         name: FormDataEntryValue | null
         email: FormDataEntryValue | null
@@ -26,10 +26,8 @@ export const userSlice = createSlice({
         userAction: (state, action: PayloadAction<User>) => {
             state.userInfo = action.payload.userInfo
         },
-        // logOut: () => {
-
-        // },
     },
+
 
 });
 

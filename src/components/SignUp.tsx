@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import { useHistory } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -15,12 +15,12 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { userAction } from "../slice/user-slice";
 import { useDispatch } from "react-redux";
+import { userInfoList } from "../User/UserInfoList";
 
 export const SignUp: React.FC = () => {
   const dispatch = useDispatch();
   const theme = createTheme();
   const history = useHistory();
-
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,11 +29,11 @@ export const SignUp: React.FC = () => {
     const email = data.get("email");
     const password = data.get("password");
     const nickname = data.get("nickname");
-    const userInfos = [name,email,password,nickname]
+    const userInfos = [name, email, password, nickname];
 
-    const result = userInfos.every((v)=>{
-      return !(v === "")
-    })
+    const result = userInfos.every((v) => {
+      return !(v === "");
+    });
 
     if (result) {
       dispatch(
@@ -45,14 +45,21 @@ export const SignUp: React.FC = () => {
             nickname,
           },
         })
-      )
-    history.push("/LogIn");
-    }else{
-      window.alert(
-        `しっかり入力をしよう！！！！！`
       );
-    }
 
+      // userInfoList.push({
+      //   userInfo: {
+      //     name,
+      //     email,
+      //     password,
+      //     nickname,
+      //   },
+      // });
+
+      history.push("/LogIn");
+    } else {
+      window.alert(`しっかり入力をしようぜ！！！！！`);
+    }
   };
 
   return (

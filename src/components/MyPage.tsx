@@ -42,7 +42,7 @@ export const MyPage = (props: Infos) => {
   const history = useHistory();
   const theme = createTheme();
 
-  console.log("bbb", userInfo);
+  console.log("MyPage-userInfo", userInfo);
 
   const unCreatable =
     inputAmount.toString() === NaN.toString() || inputAmount.toString() === "0";
