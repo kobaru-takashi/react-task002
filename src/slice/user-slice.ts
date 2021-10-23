@@ -2,10 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type User = {
     userInfo: {
-        name: string
-        email: string
-        password: string
-        nickname: string
+        name: FormDataEntryValue | null
+        email: FormDataEntryValue | null
+        password: FormDataEntryValue | null
+        nickname: FormDataEntryValue | null
     }
 
 }
