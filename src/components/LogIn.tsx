@@ -15,18 +15,19 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 import { RootState } from "../app/store";
-import { userInfoList } from "../User/UserInfoList";
-
-const logInId = "kobaru";
-const logInPass = "kobaru";
+import { useHistory } from "react-router-dom";
+import { userAction } from "../slice/user-slice";
 
 const LogIn: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const theme = createTheme();
-  const { userInfo } = useSelector((state: RootState) => state.userInfo);
+  const { userInfo } = useSelector((state: RootState) => state);
+  console.log("kobaru", userInfo);
 
-  console.log("LogIn-userInfo", userInfo);
-  console.log("userInfos-LogIn", userInfoList);
+  const handleClickHome = () => {
+    history.push("/");
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,12 +35,13 @@ const LogIn: React.FC = () => {
     const email = data.get("email");
     const password = data.get("password");
 
-    //ダミーデータ
-    if (logInId === email && logInPass === password) {
-      dispatch(push("/LogIn/myPage"));
-    }
+    const result = userInfo.users.find(
+      (v) => v.email === email && v.password === password
+    );
 
-    if (userInfo.email === email && userInfo.password === password) {
+    if (result) {
+      dispatch(
+        userAction.userLogin(result));
       dispatch(push("/LogIn/myPage"));
     } else {
       window.alert(
@@ -47,17 +49,7 @@ const LogIn: React.FC = () => {
       );
     }
 
-    // const result = userInfoList.some((v) => {
-    //   return v.userInfo.email === email && v.userInfo.password === password;
-    // });
-
-    // if (result) {
-    //   dispatch(push("/LogIn/myPage"));
-    // } else {
-    //   window.alert(
-    //     "Email または Password が間違っています。もう一度入力をして下さい。"
-    //   );
-    // }
+    console.log("LogIn-userInfo", userInfo);
   };
 
   return (
@@ -127,6 +119,14 @@ const LogIn: React.FC = () => {
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
+              <h1>ホームへ戻る。</h1>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleClickHome}
+              >
+                Home
+              </Button>
             </Grid>
           </Box>
         </Box>

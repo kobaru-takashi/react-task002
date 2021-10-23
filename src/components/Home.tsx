@@ -13,6 +13,9 @@ export const Home = () => {
   const handleClick = () => {
     history.push("/SignUp");
   };
+  const handleClickLogIn = () => {
+    history.push("/LogIn");
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -50,6 +53,16 @@ export const Home = () => {
               ボタンを押して下さい。
             </h1>
             <Button variant="contained" color="secondary" onClick={handleClick}>
+            SignUp
+            </Button>
+            <br />
+            <br />
+            <h1>
+              ログイン画面進む場合は、
+              <br />
+              ボタンを押して下さい。
+            </h1>
+            <Button variant="contained" color="secondary" onClick={handleClickLogIn}>
               LogIn
             </Button>
           </Box>

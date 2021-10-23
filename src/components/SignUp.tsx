@@ -14,13 +14,14 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { userAction } from "../slice/user-slice";
-import { useDispatch } from "react-redux";
-import { userInfoList } from "../User/UserInfoList";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/store";
 
 export const SignUp: React.FC = () => {
   const dispatch = useDispatch();
   const theme = createTheme();
   const history = useHistory();
+  const { userInfo } = useSelector((state: RootState) => state);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,24 +38,13 @@ export const SignUp: React.FC = () => {
 
     if (result) {
       dispatch(
-        userAction({
-          userInfo: {
-            name,
-            email,
-            password,
-            nickname,
-          },
+        userAction.userAddition({
+          name,
+          email,
+          password,
+          nickname,
         })
       );
-
-      // userInfoList.push({
-      //   userInfo: {
-      //     name,
-      //     email,
-      //     password,
-      //     nickname,
-      //   },
-      // });
 
       history.push("/LogIn");
     } else {
