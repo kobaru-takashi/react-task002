@@ -144,6 +144,20 @@ export const MyPage = () => {
     setInputAmount(0);
   }, []);
 
+
+  const handleClickPaymentPage = () => {
+    history.push("/Payment");
+  };
+  const handleClickTransferPage = () => {
+    history.push("/Transfer");
+  };
+  const handleClickWithdrawalPage = () => {
+    history.push("/Withdrawal");
+  };
+  const handleClickUserInformationPage = () => {
+    history.push("/UserInfo");
+  };
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -154,10 +168,11 @@ export const MyPage = () => {
             <Typography variant="h6" color="inherit" noWrap>
               MY PAGE
             </Typography>
+            <Button variant="contained"  color="secondary" onClick={handleClickPaymentPage}>入金</Button>
+            <Button variant="contained"  color="secondary" onClick={handleClickTransferPage}>引出</Button>
+            <Button variant="contained"  color="secondary" onClick={handleClickWithdrawalPage} >振り込み</Button>
+            <Button variant="contained"  color="secondary" onClick={handleClickUserInformationPage}>ユーザー情報</Button>
             <Button color="inherit"  onClick={logOutAction}> <LogoutIcon /></Button>
-            {/* <Button variant="contained" color="primary" onClick={logOutAction}>
-              <LogoutIcon />
-            </Button> */}
           </Toolbar>
         </AppBar>
       </ThemeProvider>
