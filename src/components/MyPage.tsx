@@ -15,7 +15,7 @@ type Trading = "入金" | "引出" | "振込";
 
 export type Infos = {
   name: string;
-  inputAmount: number;
+  amount: number;
   balance: number;
 };
 
@@ -27,40 +27,37 @@ type ListInfos = {
 
 const tradingList: ListInfos[] = [];
 
-// LogOut ボタン作成と初期化の実行
-// 登録画面 store に入れる。
-// dummyのkobaruを残しておく。
-// initialStateDataにdummyデータを入れておく。
-// 登録画面で登録したデータでlogInする。
-// emailとpassword以外のデータを表示する。
+// モーダル
+// 本日の大事なポイント
+// reduxの
 
-export const MyPage = (props: Infos) => {
-  const [name, nameState] = useState("");
-  const [inputAmount, inputAmountState] = useState(NaN);
-  const [balance, balanceState] = useState(500000);
-  const { userInfo } = useSelector((state: RootState) => state.userInfo);
+export const MyPage = () => {
+  const [name, setName] = useState("");
+  const [amount, setInputAmount] = useState(0);
+  const [balance, setBalance] = useState(500000);
+  const { loginInfo } = useSelector((state: RootState) => state);
   const history = useHistory();
   const theme = createTheme();
 
-  console.log("MyPage-userInfo", userInfo);
+  console.log("MyPage、login情報", loginInfo);
 
   const unCreatable =
-    inputAmount.toString() === NaN.toString() || inputAmount.toString() === "0";
+    amount.toString() === "" || amount.toString() === "0";
 
   //入金+
   const handleClickPayment = () => {
-    const result: boolean = window.confirm(`${inputAmount}円入金されますか。`);
+    const result: boolean = window.confirm(`${amount}円入金されますか。`);
 
     if (result) {
-      if (inputAmount <= 500000) {
-        balanceState(balance + inputAmount);
-        nameState(name);
-        inputAmountState(NaN);
+      if (amount <= 500000) {
+        setBalance(balance + amount);
+        setName(name);
+        setInputAmount(0);
 
         tradingList.push({
           color: { color: "blue" },
           tradingDetail: "入金",
-          tradingMoney: inputAmount,
+          tradingMoney: amount,
         });
       } else {
         const result: boolean = window.confirm(
@@ -73,34 +70,34 @@ export const MyPage = (props: Infos) => {
   //出金-
   const handleClickWithdrawal = () => {
     const result: boolean = window.confirm(
-      `${inputAmount}円引き出しされますか。`
+      `${amount}円引き出しされますか。`
     );
 
     if (result) {
-      if (!(balance - inputAmount < 0)) {
-        balanceState(balance - inputAmount);
-        nameState(name);
-        inputAmountState(NaN);
+      if (!(balance - amount < 0)) {
+        setBalance(balance - amount);
+        setName(name);
+        setInputAmount(0);
 
         tradingList.push({
           color: { color: "red" },
           tradingDetail: "引出",
-          tradingMoney: inputAmount,
+          tradingMoney: amount,
         });
       } else {
         const result: boolean = window.confirm(
           `残高不足です。引き出し金額をご確認を下さい。`
         );
         if (result) {
-          balanceState(balance);
-          nameState(name);
-          inputAmountState(NaN);
+          setBalance(balance);
+          setName(name);
+          setInputAmount(0);
         }
       }
     }
   };
 
-  //出金-
+  //ログアウト
   const logOutAction = () => {
     const result: boolean = window.confirm(
       "LogOutされますが、本当によろしいでしょうか？\nあなたの個人情報はすべて消えます。それでもいいですか。"
@@ -111,9 +108,9 @@ export const MyPage = (props: Infos) => {
   };
 
   const cancel = () => {
-    balanceState(balance);
-    nameState(name);
-    inputAmountState(NaN);
+    setBalance(balance);
+    setName(name);
+    setInputAmount(0);
   };
 
   const listItems = (
@@ -128,7 +125,7 @@ export const MyPage = (props: Infos) => {
 
   useEffect(() => {
     // console.log(tradingList);
-  }, [name, inputAmount, balance, tradingList]);
+  }, [name, amount, balance, tradingList]);
 
   useEffect(() => {
     const balancePast = (): number => {
@@ -142,9 +139,9 @@ export const MyPage = (props: Infos) => {
       });
       return money;
     };
-    balanceState(balancePast());
-    nameState(name);
-    inputAmountState(NaN);
+    setBalance(balancePast());
+    setName(name);
+    setInputAmount(0);
   }, []);
 
   return (
@@ -157,21 +154,22 @@ export const MyPage = (props: Infos) => {
             <Typography variant="h6" color="inherit" noWrap>
               MY PAGE
             </Typography>
-            <Button variant="contained" color="primary" onClick={logOutAction}>
+            <Button color="inherit"  onClick={logOutAction}> <LogoutIcon /></Button>
+            {/* <Button variant="contained" color="primary" onClick={logOutAction}>
               <LogoutIcon />
-            </Button>
+            </Button> */}
           </Toolbar>
         </AppBar>
       </ThemeProvider>
 
       <h1>
-        {userInfo.nickname}さん、残高{balance}円です。
+        {loginInfo.info.nickname}さん、残高{balance}円です。
       </h1>
       <label>
         <input
           type="number"
-          value={inputAmount}
-          onChange={(e) => inputAmountState(e.target.valueAsNumber)}
+          value={amount <= 0 ?  "": amount}
+          onChange={(e) => setInputAmount(e.target.valueAsNumber)}
         />
         金額を入力
       </label>
@@ -208,6 +206,6 @@ export const MyPage = (props: Infos) => {
 
 MyPage.defaultProps = {
   name: "",
-  inputAmount: NaN,
+  amount: 0,
   balance: 500000,
 };
