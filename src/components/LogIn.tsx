@@ -16,14 +16,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 import { RootState } from "../app/store";
 import { useHistory } from "react-router-dom";
-import { userAction } from "../slice/user-slice";
+import { loginAction } from "../slice/login-slice";
+// import { signupAction } from "../slice/signup-slice";
 
 const LogIn: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const theme = createTheme();
-  const { userInfo } = useSelector((state: RootState) => state);
-  console.log("kobaru", userInfo);
+  const { signupInfo } = useSelector((state: RootState) => state);
+  console.log("LogInPage、signup情報", signupInfo);
 
   const handleClickHome = () => {
     history.push("/");
@@ -35,13 +36,22 @@ const LogIn: React.FC = () => {
     const email = data.get("email");
     const password = data.get("password");
 
-    const result = userInfo.users.find(
-      (v) => v.email === email && v.password === password
+    const result = signupInfo.find(
+      (v) => v.info.email === email && v.info.password === password
     );
 
     if (result) {
       dispatch(
-        userAction.userLogin(result));
+        loginAction.userLogin({
+          info: {
+            firstName:result.info.firstName,
+            lastName:result.info.lastName,
+            email:result.info.email,
+            password:result.info.password,
+            nickname:result.info.nickname,
+          }
+        })
+      );
       dispatch(push("/LogIn/myPage"));
     } else {
       window.alert(
@@ -49,7 +59,7 @@ const LogIn: React.FC = () => {
       );
     }
 
-    console.log("LogIn-userInfo", userInfo);
+    console.log("LogIn-userInfo", signupInfo);
   };
 
   return (
@@ -68,7 +78,7 @@ const LogIn: React.FC = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Log in
           </Typography>
           <Box
             component="form"

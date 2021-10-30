@@ -13,7 +13,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { userAction } from "../slice/user-slice";
+import { signupAction } from "../slice/signup-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 
@@ -21,16 +21,17 @@ export const SignUp: React.FC = () => {
   const dispatch = useDispatch();
   const theme = createTheme();
   const history = useHistory();
-  const { userInfo } = useSelector((state: RootState) => state);
+  const { signupInfo } = useSelector((state: RootState) => state);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const name = data.get("firstName");
+    const firstName = data.get("firstName");
+    const lastName = data.get("lastName");
     const email = data.get("email");
     const password = data.get("password");
     const nickname = data.get("nickname");
-    const userInfos = [name, email, password, nickname];
+    const userInfos = [firstName, lastName, email, password, nickname];
 
     const result = userInfos.every((v) => {
       return !(v === "");
@@ -38,11 +39,14 @@ export const SignUp: React.FC = () => {
 
     if (result) {
       dispatch(
-        userAction.userAddition({
-          name,
-          email,
-          password,
-          nickname,
+        signupAction.userSignup({
+          info: {
+            firstName,
+            lastName,
+            email,
+            password,
+            nickname,
+          },
         })
       );
 

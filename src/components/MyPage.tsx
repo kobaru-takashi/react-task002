@@ -28,16 +28,18 @@ type ListInfos = {
 const tradingList: ListInfos[] = [];
 
 // モーダル
+// 本日の大事なポイント
+// reduxの
 
 export const MyPage = () => {
   const [name, setName] = useState("");
   const [amount, setInputAmount] = useState(0);
   const [balance, setBalance] = useState(500000);
-  const { userInfo } = useSelector((state: RootState) => state);
+  const { loginInfo } = useSelector((state: RootState) => state);
   const history = useHistory();
   const theme = createTheme();
 
-  console.log("MyPage-userInfo", userInfo);
+  console.log("MyPage、login情報", loginInfo);
 
   const unCreatable =
     amount.toString() === "" || amount.toString() === "0";
@@ -161,7 +163,7 @@ export const MyPage = () => {
       </ThemeProvider>
 
       <h1>
-        {userInfo.logIn.nickname}さん、残高{balance}円です。
+        {loginInfo.info.nickname}さん、残高{balance}円です。
       </h1>
       <label>
         <input
