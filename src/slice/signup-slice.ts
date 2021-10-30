@@ -28,7 +28,7 @@ const initialState: User[] = [{
 }]
 
 export const signupSlice = createSlice({
-    name: "userInfo",
+    name: "signupInfo",
     initialState,
     reducers: {
         userSignup: (state, action: PayloadAction<User>) => {
