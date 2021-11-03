@@ -9,7 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, store } from "../app/store";
+import { RootState, store } from "../../../app/store";
 
 type Trading = "入金" | "引出" | "振込";
 

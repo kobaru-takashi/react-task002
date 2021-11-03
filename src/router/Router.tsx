@@ -1,13 +1,13 @@
 import { Redirect, Switch, Route } from "react-router-dom";
-import { Home } from "../components/Home";
-import { SignUp } from "../components/SignUp";
-import { Payment } from "../components/Payment";
-import { Transfer } from "../components/Transfer";
-import { Withdrawal } from "../components/Withdrawal";
-import { UserInfo } from "../components/UserInfo";
-import { UserInfoEdit } from "../components/UserInfoEdit";
-import { MyPage, Infos } from "../components/MyPage";
-import LogIn from "../components/LogIn";
+import { Home } from "../components/pages/home/Home";
+import { SignUp } from "../components/pages/signup/SignUp";
+import { Payment } from "../components/pages/payment/Payment";
+import { Transfer } from "../components/pages/transfer/Transfer";
+import { Withdrawal } from "../components/pages/withdrawal/Withdrawal";
+import { UserInfo } from "../components/pages/userinfo/UserInfo";
+import { UserInfoEdit } from "../components/pages/userinfoedit/UserInfoEdit";
+import { MyPage, Infos } from "../components/pages/mypage/MyPage";
+import LogIn from "../components/pages/login/LogIn";
 
 export const Router = (
 

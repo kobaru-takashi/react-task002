@@ -13,9 +13,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { signupAction } from "../slice/signup-slice";
+import { signupAction } from "../../../slice/signup-slice";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../app/store";
+import { RootState } from "../../../app/store";
 
 export const SignUp: React.FC = () => {
   const dispatch = useDispatch();

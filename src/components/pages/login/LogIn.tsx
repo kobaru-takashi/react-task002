@@ -14,9 +14,9 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
-import { RootState } from "../app/store";
+import { RootState } from "../../../app/store";
 import { useHistory } from "react-router-dom";
-import { loginAction } from "../slice/login-slice";
+import { loginAction } from "../../../slice/login-slice";
 // import { signupAction } from "../slice/signup-slice";
 
 const LogIn: React.FC = () => {
